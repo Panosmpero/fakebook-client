@@ -40,7 +40,7 @@ const Login = (props) => {
 
   useEffect(() => {
     const toastError = (text) => toast.error(text);
-    console.log(errors);
+    
     if (Object.keys(errors).length > 0)
       Object.values(errors).map((err) => toastError(err));
   }, [errors]);
