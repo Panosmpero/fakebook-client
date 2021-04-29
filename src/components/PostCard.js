@@ -4,6 +4,7 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/auth";
 import LikeButton from "./LikeButton";
+import DeleteButton from "./DeleteButton";
 
 const PostCard = ({
   post: { id, username, body, createdAt, likes, likesCount, commentsCount },
@@ -28,21 +29,14 @@ const PostCard = ({
         <LikeButton user={user} post={{ id, likes, likesCount }} />
         <Button labelPosition="right" as={Link} to={`/posts/${id}`}>
           <Button color="teal" basic>
-            <Icon name="comment" />
+            <Icon name="comments" />
           </Button>
           <Label basic color="teal" pointing="left">
             {commentsCount}
           </Label>
         </Button>
         {user && user.username === username && (
-          <Button
-            as="div"
-            color="red"
-            floated="right"
-            onClick={() => alert("Delete?")}
-          >
-            <Icon name="trash" style={{ margin: 0 }} />
-          </Button>
+          <DeleteButton postId={id} />
         )}
       </Card.Content>
     </Card>

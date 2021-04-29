@@ -14,9 +14,12 @@ const LikeButton = ({ user, post: { id, likes, likesCount } }) => {
   }, [likes, user]);
 
   const [likePost] = useMutation(LIKE_POST, {
-    variables: { postId: id }
+    variables: { postId: id },
+    onError(error) {
+      console.log(error)
+    }
   });
-
+  
   return (
     <Button as="div" labelPosition="right" onClick={likePost}>
       <Button

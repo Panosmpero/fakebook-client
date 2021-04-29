@@ -8,6 +8,7 @@ import Home from "./screens/Home";
 import Login from "./screens/Login";
 import Register from "./screens/Register";
 import AuthRoute from "./util/authRoutes";
+import SinglePost from "./screens/SinglePost";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route exact path="/" component={Home} />
         <AuthRoute path="/login" component={Login} />
         <AuthRoute path="/register" component={Register} />
+        <Route path="/posts/:postId" component={SinglePost} />
       </Switch>
     </Container>
   );
