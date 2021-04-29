@@ -5,14 +5,17 @@ import reportWebVitals from "./reportWebVitals";
 import { ApolloProvider } from "@apollo/react-hooks";
 import client from "./ApolloProvider";
 import { BrowserRouter as Router } from "react-router-dom";
+import { AuthProvider } from "./context/auth";
 
 ReactDOM.render(
   <React.StrictMode>
-    <ApolloProvider client={client}>
-      <Router>
-        <App />
-      </Router>
-    </ApolloProvider>
+    <AuthProvider>
+      <ApolloProvider client={client}>
+        <Router>
+          <App />
+        </Router>
+      </ApolloProvider>
+    </AuthProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

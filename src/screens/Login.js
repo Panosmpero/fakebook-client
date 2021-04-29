@@ -1,12 +1,14 @@
 import { useMutation } from "@apollo/client";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, Form } from "semantic-ui-react";
 import { LOGIN_USER } from "../util/graphql";
 import { useForm } from "../util/hooks";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { AuthContext } from "../context/auth";
 
 const Login = (props) => {
+  const context = useContext(AuthContext);
   const [errors, setErrors] = useState({});
 
   const initialState = {
@@ -22,6 +24,8 @@ const Login = (props) => {
 
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
     update(_, result) {
+      // console.log(result.data)
+      context.login(result.data.login);
       props.history.push("/");
     },
     onError(err) {
@@ -36,8 +40,9 @@ const Login = (props) => {
 
   useEffect(() => {
     const toastError = (text) => toast.error(text);
-    console.log(errors)
-    if (Object.keys(errors).length > 0) Object.values(errors).map(err => toastError(err))
+    console.log(errors);
+    if (Object.keys(errors).length > 0)
+      Object.values(errors).map((err) => toastError(err));
   }, [errors]);
 
   return (
