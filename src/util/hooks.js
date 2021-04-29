@@ -18,6 +18,6 @@ export const useForm = (callback, initialState = {}) => {
   return {
     handleChange,
     handleSubmit,
-    values
-  }
-}
+    values,
+  };
+};
