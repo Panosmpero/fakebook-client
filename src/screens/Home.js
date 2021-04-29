@@ -8,7 +8,7 @@ const Home = () => {
   const { loading, data } = useQuery(FETCH_POSTS_QUERY);
   const posts = data ? data.getPosts : null
   return (
-    <Grid columns={3}>
+    <Grid columns={3} stackable doubling>
       <Grid.Row className="page-title">
         <h1>Recent Posts</h1>
       </Grid.Row>

@@ -7,6 +7,7 @@ import MenuBar from "./components/MenuBar";
 import Home from "./screens/Home";
 import Login from "./screens/Login";
 import Register from "./screens/Register";
+import AuthRoute from "./util/authRoutes";
 
 function App() {
   return (
@@ -14,8 +15,8 @@ function App() {
       <MenuBar />
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route path="/login" component={Login} />
-        <Route path="/register" component={Register} />
+        <AuthRoute path="/login" component={Login} />
+        <AuthRoute path="/register" component={Register} />
       </Switch>
     </Container>
   );
