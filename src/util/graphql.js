@@ -22,6 +22,30 @@ export const FETCH_POSTS_QUERY = gql`
   }
 `;
 
+export const CREATE_POST = gql`
+  mutation createPost($body: String!) {
+    createPost(body: $body) {
+      id
+      body
+      username
+      createdAt
+      comments {
+        id
+        username
+        body
+        createdAt
+      }
+      likes {
+        id
+        username
+        createdAt
+      }
+      likesCount
+      commentsCount
+    }
+  }
+`;
+
 export const REGISTER_USER = gql`
   mutation register(
     $username: String!
@@ -48,11 +72,7 @@ export const REGISTER_USER = gql`
 
 export const LOGIN_USER = gql`
   mutation login($username: String!, $password: String!) {
-    login(
-      loginInput: {
-        username: $username, password: $password
-      } 
-    ) {
+    login(loginInput: { username: $username, password: $password }) {
       id
       username
       email
