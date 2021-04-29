@@ -8,15 +8,13 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { AuthProvider } from "./context/auth";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <AuthProvider>
-      <ApolloProvider client={client}>
-        <Router>
-          <App />
-        </Router>
-      </ApolloProvider>
-    </AuthProvider>
-  </React.StrictMode>,
+  <AuthProvider>
+    <ApolloProvider client={client}>
+      <Router>
+        <App />
+      </Router>
+    </ApolloProvider>
+  </AuthProvider>,
   document.getElementById("root")
 );
 

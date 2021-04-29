@@ -1,33 +1,60 @@
 import { useMutation } from "@apollo/client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form } from "semantic-ui-react";
-import { CREATE_POST } from "../util/graphql";
+import { CREATE_POST, FETCH_POSTS_QUERY } from "../util/graphql";
 import { useForm } from "../util/hooks";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const PostForm = () => {
+  const [errors, setErrors] = useState("");
   const initialState = { body: "" };
   const { values, handleChange, handleSubmit } = useForm(
     createPostCallback,
     initialState
   );
 
+  // https://www.apollographql.com/docs/react/caching/cache-interaction/#using-cachemodify
+  // we access the query from cache (check devtools rootquery)
+  // and we modify getposts to be updated with the latest
   const [createPost] = useMutation(CREATE_POST, {
-    update(_, result) {
-      console.log(result);
+    variables: values,
+    update(proxy, result) {
+      const data = proxy.readQuery({
+        query: FETCH_POSTS_QUERY,
+      });
+      console.log("proxy data", data);
+
+      data.getPosts = [result.data.createPost, ...data.getPosts];
+      console.log("proxy data after change", data);
+
+      proxy.writeQuery({ query: FETCH_POSTS_QUERY, data });
       values.body = "";
     },
     onError(err) {
-      console.log(err)
+      setErrors(err);
     },
-    variables: values,
   });
 
   function createPostCallback() {
     createPost();
   }
 
+  useEffect(() => {
+    const toastError = (text) => toast.error(text);
+    if (errors) toastError(errors.graphQLErrors[0].message);
+  }, [errors]);
+
   return (
     <Form onSubmit={handleSubmit}>
+      <ToastContainer
+        position="top-left"
+        autoClose={3000}
+        hideProgressBar
+        closeOnClick
+        rtl={false}
+        draggable={false}
+      />
       <h2>Create a post:</h2>
       <Form.Field>
         <Form.Input
@@ -36,7 +63,7 @@ const PostForm = () => {
           onChange={handleChange}
           value={values.body}
         />
-        <Button type="submit" color="team">
+        <Button type="submit" color="teal">
           Submit
         </Button>
       </Form.Field>

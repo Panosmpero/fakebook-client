@@ -10,7 +10,7 @@ const Home = () => {
   const { user } = useContext(AuthContext);
   const { loading, data } = useQuery(FETCH_POSTS_QUERY);
   const posts = data ? data.getPosts : null;
-
+  
   return (
     <Grid columns={3} stackable doubling>
       <Grid.Row className="page-title">
