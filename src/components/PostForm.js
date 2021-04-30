@@ -1,4 +1,4 @@
-import { useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/react-hooks";
 import React, { useEffect, useState } from "react";
 import { Button, Form } from "semantic-ui-react";
 import { CREATE_POST, FETCH_POSTS_QUERY } from "../util/graphql";

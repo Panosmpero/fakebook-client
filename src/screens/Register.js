@@ -1,4 +1,4 @@
-import { useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/react-hooks";
 import React, { useContext, useState } from "react";
 import { Button, Form } from "semantic-ui-react";
 import { REGISTER_USER } from "../util/graphql";

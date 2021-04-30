@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/react-hooks";
 import moment from "moment";
 import React, { useContext } from "react";
 import { Button, Card, Grid, Icon, Image, Label } from "semantic-ui-react";
