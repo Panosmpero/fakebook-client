@@ -1,21 +1,22 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Menu } from "semantic-ui-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/auth";
 
 const MenuBar = () => {
-  const pathname = window.location.pathname;
+  const { pathname } = useLocation();
   const path = pathname === "/" ? "home" : pathname.slice(1);
-
   const { user, logout } = useContext(AuthContext);
-
   const [activeItem, setActiveItem] = useState(path);
-
-  const handleItemClick = (e, { name }) => setActiveItem(name);
-
+  
   const handleLogout = () => {
     logout();
   };
+
+  // set active nav item when location changes
+  useEffect(() => {
+    setActiveItem(path)
+  }, [path])
 
   return user ? (
     <Menu pointing secondary size="massive" color="teal">
@@ -37,7 +38,6 @@ const MenuBar = () => {
       <Menu.Item
         name="home"
         active={activeItem === "home"}
-        onClick={handleItemClick}
         as={Link}
         to="/"
       />
@@ -45,14 +45,12 @@ const MenuBar = () => {
         <Menu.Item
           name="login"
           active={activeItem === "login"}
-          onClick={handleItemClick}
           as={Link}
           to="/login"
         />
         <Menu.Item
           name="register"
           active={activeItem === "register"}
-          onClick={handleItemClick}
           as={Link}
           to="/register"
         />
