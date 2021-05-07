@@ -1,32 +1,17 @@
-import { useMutation, useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/react-hooks";
 import moment from "moment";
-import React, { useContext, useEffect, useRef, useState } from "react";
-import {
-  Button,
-  Card,
-  Form,
-  Grid,
-  Icon,
-  Image,
-  Label,
-} from "semantic-ui-react";
+import React, { useContext } from "react";
+import { Button, Card, Grid, Icon, Image, Label } from "semantic-ui-react";
 import LikeButton from "../components/LikeButton";
 import { AuthContext } from "../context/auth";
-import { CREATE_COMMENT, FETCH_POST_QUERY } from "../util/graphql";
+import { FETCH_POST_QUERY } from "../util/graphql";
 import DeleteButton from "../components/DeleteButton";
-import { useForm } from "../util/hooks";
 import { ToastContainer, toast } from "react-toastify";
+import CommentForm from "../components/CommentForm";
 
 const SinglePost = (props) => {
-  const [errors, setErrors] = useState("");
   const postId = props.match.params.postId;
   const { user } = useContext(AuthContext);
-  const initialState = { body: "" };
-  const { values, handleChange, handleSubmit } = useForm(
-    createCommentCallback,
-    initialState
-  );
-  const commentInputRef = useRef(null);
 
   const { data } = useQuery(FETCH_POST_QUERY, {
     variables: {
@@ -39,20 +24,6 @@ const SinglePost = (props) => {
 
   const post = data && data.getPost ? data.getPost : null;
 
-  const [createComment] = useMutation(CREATE_COMMENT, {
-    variables: {
-      postId,
-      body: values.body,
-    },
-    update() {
-      values.body = "";
-      commentInputRef.current.blur();
-    },
-    onError(error) {
-      setErrors(error);
-    },
-  });
-
   const handleCommentButton = () => {
     user
       ? toast.info("Write a comment below :D")
@@ -62,15 +33,6 @@ const SinglePost = (props) => {
   function deletePostCallback() {
     props.history.push("/");
   }
-
-  function createCommentCallback() {
-    createComment();
-  }
-
-  useEffect(() => {
-    const toastError = (text) => toast.error(text);
-    if (errors) toastError(errors.graphQLErrors[0].message);
-  }, [errors]);
 
   return !post ? (
     <p>Loading post...</p>
@@ -126,28 +88,7 @@ const SinglePost = (props) => {
               )}
             </Card.Content>
           </Card>
-          {user && (
-            <Card fluid>
-              <Card.Content>
-                <Form onSubmit={handleSubmit}>
-                  <h3>Post a comment</h3>
-                  <Form.Field>
-                    <input
-                      placeholder="Write a comment..."
-                      name="body"
-                      onChange={handleChange}
-                      value={values.body}
-                      ref={commentInputRef}
-                      style={{ marginBottom: 10 }}
-                    />
-                    <Button type="submit" color="teal">
-                      Submit
-                    </Button>
-                  </Form.Field>
-                </Form>
-              </Card.Content>
-            </Card>
-          )}
+          {user && <CommentForm postId={postId} />}
           {post.comments.map((comment) => (
             <Card fluid key={comment.id}>
               <Card.Content>
