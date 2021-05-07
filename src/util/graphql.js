@@ -152,3 +152,14 @@ export const LOGIN_USER = gql`
     }
   }
 `;
+
+export const FETCH_USERS = gql`
+  query {
+    getUsers {
+      id
+      username
+      email
+      createdAt
+    }
+  }
+`
