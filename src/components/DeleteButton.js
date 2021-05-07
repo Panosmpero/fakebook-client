@@ -23,10 +23,12 @@ const DeleteButton = ({ postId, callback, commentId }) => {
       if (!commentId) {
         const data = proxy.readQuery({
           query: FETCH_POSTS_QUERY,
+          variables: { postId, commentId }
         });
         data.getPosts = data.getPosts.filter((post) => post.id !== postId);
         proxy.writeQuery({
           query: FETCH_POSTS_QUERY,
+          variables: { postId, commentId },
           data,
         });
       }
